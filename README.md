@@ -1,6 +1,8 @@
-# HKUST Smart Building Digital Twin
+# UE5 Smart Building Digital Twin Prototype
 
-An Unreal Engine 5.8 C++ digital-twin demonstration for a university teaching building. The project presents a 3D building model, 26 room-level views, simulated BMS data, spatial temperature overlays, day/night lighting, and a responsive dashboard UI.
+A personal portfolio prototype built with Unreal Engine 5.8 and C++ to explore smart-building digital twin visualization and interaction.
+
+This project is not based on a real deployed building or live BMS system. It uses a 3D building model and simulated building-management data to demonstrate how room-level environmental information, energy data, spatial visualization, and interactive monitoring could be integrated into a digital twin interface.
 
 ## Highlights
 

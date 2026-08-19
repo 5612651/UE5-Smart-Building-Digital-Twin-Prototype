@@ -1,65 +1,67 @@
 # UE5 Smart Building Digital Twin Prototype
 
-A personal portfolio prototype built with Unreal Engine 5.8 and C++ to explore smart-building digital twin visualization and interaction.
+> Personal portfolio prototype · Unreal Engine 5.8 · C++ · UMG · CSV-driven building data
 
-This project is not based on a real deployed building or live BMS system. It uses a 3D building model and simulated building-management data to demonstrate how room-level environmental information, energy data, spatial visualization, and interactive monitoring could be integrated into a digital twin interface.
+A C++-driven Unreal Engine prototype that explores how a smart-building digital twin can combine 3D spatial interaction, room-level BMS data, environmental visualization, and an operator-facing dashboard.
 
-## Highlights
+This is **not** a deployed building system and does not use real institutional or live BMS data. All monitoring data, alert scenarios, and room semantics are simulated for demonstration purposes.
 
-- Three presentation modes: orbit view, building overview, and room view.
-- Clickable Room001–Room026 spatial volumes; room volumes are hidden automatically in room view.
-- C++ camera and interaction layer with automatic orbit rotation and manual mouse control.
-- Two-year hourly BMS simulation dataset (2026-01-01 to 2027-12-31), including class schedules, workdays, holidays, vacations, and demonstration anomalies.
-- Room-level environmental and operational metrics: temperature, humidity, CO2, occupancy, energy use, HVAC state, and ventilation ratio.
-- Translucent temperature overlay that remains visible through the building envelope in orbit/overview modes.
-- Time playback, date/hour controls, day/night sun and moon behavior, and room point lights.
-- Dashboard UI with alert-centric building status and room-level real-time data cards.
-- In-app `退出程序` button for packaged demonstrations.
+## Try the Demo
 
-## Technology
+Download the latest Windows build from the [Releases page](https://github.com/5612651/UE5-Smart-Building-Digital-Twin-Prototype/releases/latest), extract the ZIP, and run `Building.exe`.
 
-- Unreal Engine 5.8
-- C++ / UMG
-- World Partition external actors
-- CSV-backed simulation data
+No Unreal Engine installation is required for the packaged demo. Keep the entire extracted `Windows` directory intact; `Building.exe` depends on the adjacent content and runtime files.
 
-## Project Structure
+## What This Prototype Demonstrates
+
+- C++-controlled orbit, overview, and room-camera modes.
+- Clickable Room001–Room026 volumes that switch to the matching room camera.
+- Automatic orbit rotation with manual mouse rotation and scroll-wheel zoom.
+- A spatial temperature layer that remains visible through the building envelope in orbit and overview modes.
+- CSV-backed room data for temperature, humidity, CO₂, occupancy, energy, HVAC load/mode, and fresh-air ratio.
+- A two-year hourly simulation timeline (2026–2027) with classroom schedules, workdays, holidays, vacations, and intentionally injected abnormal conditions.
+- Alert-first building status view and room-level real-time data panels.
+- Simulated day/night lighting, including room point lights and time-based sun/moon behavior.
+- Responsive UMG dashboard UI, room selector, timeline controls, demo presets, and in-app exit control.
+
+## Architecture
+
+| Area | Main implementation |
+| --- | --- |
+| Digital-twin state | `ADigitalTwinManager` manages view mode, selected room, simulated time, overlays, and lighting. |
+| Interaction | `ADTDigitalTwinPlayerController` routes UI and scene input, including spatial room selection. |
+| Cameras | `ADTOrbitCamera` provides automated/manual orbit control; `ADTRoomCamera` serves the overview and 26 room views. |
+| Data | `UDigitalTwinDataSubsystem` loads and caches the CSV data and metadata. |
+| UI | `UDigitalTwinControlWidget` builds and updates the dashboard through native C++/UMG logic. |
+| Level | UE World Partition with external actors, including the room visualization volumes. |
+
+## Project Layout
 
 ```text
-Source/Building/       C++ gameplay, cameras, UI, data subsystem, and manager
-Content/Untitled/      Main World Partition level and external actor references
-Content/Digital_Twins/ Building model, materials, textures, lighting assets
-Content/Data/          BMS hourly CSV data and room/building metadata
-Content/DigitalTwin/   Runtime temperature-overlay material
-Config/                Default game and packaging configuration
-Scripts/               Reproducible editor migration/configuration utilities
+Source/Building/       Native C++ gameplay, cameras, UI, manager, and data subsystem
+Content/Untitled/      Main World Partition level and its external actors
+Content/Digital_Twins/ Building model, materials, textures, and lighting assets
+Content/Data/          Room metadata plus hourly BMS simulation CSV files
+Content/DigitalTwin/   Runtime spatial-overlay material
+Config/                Input, game mode, map, and packaging configuration
+Scripts/               Reproducible editor-side asset configuration utilities
 ```
 
-## Run in Unreal Engine
+## Open the Source Project
 
-1. Install Unreal Engine 5.8 and Visual Studio with the C++ game-development workload.
-2. Clone this repository.
-3. Right-click `Building.uproject` and select **Generate Visual Studio project files** if required.
-4. Open `Building.sln`, build `BuildingEditor Win64 Development`, then open `Building.uproject`.
-5. Run the `/Game/Untitled` level with PIE or Standalone Game.
+Requirements: Unreal Engine 5.8 and Visual Studio with the C++ game-development workload.
 
-The project configuration sets the native `DTDigitalTwinGameMode` and `/Game/Untitled` as the default experience.
+1. Clone the repository.
+2. Open `Building.sln` and build `BuildingEditor Win64 Development`.
+3. Open `Building.uproject`.
+4. Start `/Game/Untitled` using PIE or Standalone Game.
 
-## Data
+The project is configured to use the native `DTDigitalTwinGameMode` and start from `/Game/Untitled`.
 
-`Content/Data/BMSHourly/` contains one CSV file per room and a building-overview dataset. Values are generated for demonstration and visualization purposes; they are not live building data.
+## Data Disclaimer
 
-## Key C++ Classes
+`Content/Data/BMSHourly/` contains synthetic hourly data for visualization and interaction testing only. It should not be interpreted as real building performance, occupancy, or environmental records.
 
-| Class | Responsibility |
-| --- | --- |
-| `ADigitalTwinManager` | View mode, room selection, simulation time, day/night logic, room overlays |
-| `ADTDigitalTwinPlayerController` | Scene/UI input routing and spatial room selection |
-| `ADTOrbitCamera` | Automated and manual orbit camera control |
-| `ADTRoomCamera` | Shared native room/overview camera type |
-| `UDigitalTwinDataSubsystem` | CSV loading and cached BMS/metadata queries |
-| `UDigitalTwinControlWidget` | Dashboard UI construction and event binding |
+## Portfolio Note
 
-## Notes
-
-This repository is intended as a portfolio demonstration. Packaged executables, Unreal Engine caches, IDE caches, and local build artifacts are intentionally excluded. Ensure that you have permission to publish any third-party model, material, or texture assets before making the repository public.
+The source repository intentionally excludes packaged binaries, Unreal cache folders, intermediate build output, and IDE caches. The ready-to-run Windows build is distributed through GitHub Releases instead.
